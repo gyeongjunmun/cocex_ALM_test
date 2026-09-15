@@ -77,7 +77,8 @@ export default function Home() {
     if (!supabase || !session || !newTitle.trim()) return;
     setSaving(true);
     setMessage("");
-    const nextNumber = `REQ-${String(requirements.length + 15).padStart(4, "0")}`;
+    const maxNumber = requirements.reduce((max, item) => Math.max(max, Number(item.document_number.replace("REQ-", "")) || 0), 0);
+    const nextNumber = `REQ-${String(maxNumber + 1).padStart(4, "0")}`;
     const { error } = await supabase.from("work_items").insert({ project_id: projectId, document_id: documentId, type_id: typeId, status_id: draftStatusId, document_number: nextNumber, title: newTitle.trim(), description: newDescription.trim(), created_by: session.user.id, updated_by: session.user.id });
     if (error) setMessage(error.message);
     else { setModalOpen(false); setNewTitle(""); setNewDescription(""); await loadRequirements(); setMessage(`${nextNumber} 요구사항이 생성되었습니다.`); }
