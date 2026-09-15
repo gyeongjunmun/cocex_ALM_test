@@ -1,0 +1,7 @@
+.superpowers/
+.pnpm-store/
+.env.local
+node_modules/
+.next/
+playwright-report/
+test-results/
